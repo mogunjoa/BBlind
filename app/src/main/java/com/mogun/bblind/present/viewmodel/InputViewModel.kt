@@ -3,11 +3,18 @@ package com.mogun.bblind.present.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mogun.bblind.domain.model.Content
+import com.mogun.bblind.domain.usecase.ContentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class InputViewModel: ViewModel() {
+class InputViewModel @Inject constructor(
+    private val contentUseCase: ContentUseCase
+): ViewModel() {
 
     private val _doneEvent = MutableLiveData<Pair<Boolean, String>>()
     val doneEvent: LiveData<Pair<Boolean, String>> = _doneEvent
@@ -34,6 +41,20 @@ class InputViewModel: ViewModel() {
             return
         }
 
-        //TODO API 통신
+        viewModelScope.launch(Dispatchers.IO) {
+            contentUseCase.save(
+                item?.copy(
+                    category = categoryValue,
+                    title = titleValue,
+                    content = contentValue
+                ) ?: Content(
+                    category = categoryValue,
+                    title = titleValue,
+                    content = contentValue
+                )
+            ).also {
+                _doneEvent.postValue(Pair(true, if(it) "저장 완료" else "저장 할 수 없습니다"))
+            }
+        }
     }
 }
