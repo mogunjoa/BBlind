@@ -30,7 +30,7 @@
                 android:hint="카테고리"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:text="@{viewModel.category}"
+                android:text="@={viewModel.category}"
                 android:textAppearance="@style/TextAppearance.App">
 
                 <requestFocus />
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="제목"
-                android:text="@{viewModel.title}"
+                android:text="@={viewModel.title}"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:textAppearance="@style/TextAppearance.App" />
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:hint="내용"
-                android:text="@{viewModel.content}"
+                android:text="@={viewModel.content}"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:minHeight="150dp"
